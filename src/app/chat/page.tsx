@@ -221,6 +221,27 @@ const ChatBox = styled.div`
   display: flex;
   flex-direction: column;
   gap: 8px;
+
+  /* Chrome, Safari, Opera를 위한 스크롤바 스타일링 */
+  &::-webkit-scrollbar {
+    width: 6px;
+  }
+
+  &::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background-color: rgba(0, 0, 0, 0.2);
+    border-radius: 3px;
+    &:hover {
+      background-color: rgba(0, 0, 0, 0.3);
+    }
+  }
+
+  /* Firefox를 위한 스크롤바 스타일링 */
+  scrollbar-width: thin;
+  scrollbar-color: rgba(0, 0, 0, 0.2) transparent;
 `
 
 const InputBox = styled.div`
