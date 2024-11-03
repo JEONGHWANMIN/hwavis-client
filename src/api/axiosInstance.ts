@@ -1,7 +1,8 @@
 import axios, { AxiosInstance } from 'axios'
 
 const DEFAULT_ACCEPT_LANGUAGE = 'ko-KR,ko;q=0.9,en-US;q=0.8,en;q=0.7'
-const DEFAULT_API_ENDPOINT = 'http://localhost:8080'
+const DEFAULT_API_ENDPOINT =
+  'https://port-0-hwanvis-server-ss7z32llwultj9i.sel5.cloudtype.app'
 const BASE_URL = `${DEFAULT_API_ENDPOINT}/api`
 const DEFAULT_HEADERS = {
   Accept: 'application/json',
