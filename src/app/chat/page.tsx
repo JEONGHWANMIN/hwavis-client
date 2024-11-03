@@ -2,7 +2,7 @@
 
 import { ChatLayout } from '@/components/@core/ChatLayout'
 import TextArea from 'antd/es/input/TextArea'
-import { Button, Flex, Spin } from 'antd'
+import { Button, Flex, message, Spin } from 'antd'
 import SearchIcon from '@/assets/svg/search-icon.svg'
 import React, { FormEvent, KeyboardEvent, useState } from 'react'
 import styled from '@emotion/styled'
@@ -28,6 +28,7 @@ export interface CreatePromptDto {
 }
 
 const ChatPage = () => {
+  const [messageApi, contextHolder] = message.useMessage()
   const [isLoading, setIsLoading] = useState(false)
   const [text, setText] = useState('')
   const [chats, setChats] = useState<GptMessage[]>([])
@@ -35,13 +36,26 @@ const ChatPage = () => {
 
   const resetChat = () => setChats([])
 
+  const showError = (message: string) => {
+    messageApi.open({
+      type: 'error',
+      content: message,
+    })
+  }
+
   const handleSubmit = async (
     e?: FormEvent<HTMLFormElement> | KeyboardEvent<HTMLTextAreaElement>,
   ) => {
     if (e) e.preventDefault()
 
-    if (!apiKey) return
-    if (text.trim().length === 0) return
+    if (!apiKey) {
+      showError('api key를 등록해주세요')
+      return
+    }
+    if (text.trim().length === 0) {
+      showError('검색어를 입력해주세요.')
+      return
+    }
 
     setIsLoading(true)
 
@@ -92,6 +106,7 @@ const ChatPage = () => {
 
   return (
     <ChatLayout resetChat={resetChat}>
+      {contextHolder}
       <ChatContainer>
         <ChatBox>
           {chats.length > 0 ? (
