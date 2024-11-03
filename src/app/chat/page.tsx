@@ -16,7 +16,6 @@ import rehypeRaw from 'rehype-raw'
 import 'katex/dist/katex.min.css'
 import MarkdownComponents from '@/app/chat/MarkdownComponents'
 import { axiosInstance } from '@/api/axiosInstance'
-import Empty from 'antd/es/empty/empty'
 
 export interface GptMessage {
   role: string
