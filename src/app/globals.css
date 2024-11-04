@@ -1,3 +1,4 @@
+/* Reset CSS */
 html,
 body,
 div,
@@ -85,7 +86,17 @@ video {
   font-size: 100%;
   font: inherit;
   vertical-align: baseline;
+  font-family:
+    var(--font-lineSeedKrRg),
+    -apple-system,
+    BlinkMacSystemFont,
+    'Segoe UI',
+    Roboto,
+    'Helvetica Neue',
+    Arial,
+    sans-serif;
 }
+
 /* HTML5 display-role reset for older browsers */
 article,
 aside,
@@ -100,17 +111,32 @@ nav,
 section {
   display: block;
 }
+
 body {
   line-height: 1;
+  font-family:
+    var(--font-lineSeedKrRg),
+    -apple-system,
+    BlinkMacSystemFont,
+    'Segoe UI',
+    Roboto,
+    'Helvetica Neue',
+    Arial,
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
+
 ol,
 ul {
   list-style: none;
 }
+
 blockquote,
 q {
   quotes: none;
 }
+
 blockquote:before,
 blockquote:after,
 q:before,
@@ -118,15 +144,104 @@ q:after {
   content: '';
   content: none;
 }
+
 table {
   border-collapse: collapse;
   border-spacing: 0;
 }
 
+/* Custom font styles */
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family:
+    var(--font-lineSeedKrBd),
+    -apple-system,
+    BlinkMacSystemFont,
+    'Segoe UI',
+    Roboto,
+    'Helvetica Neue',
+    Arial,
+    sans-serif;
+}
+
+/* Code styles */
 code {
   background-color: rgba(0, 0, 0, 0.1);
   padding: 0.2em 0.4em;
   border-radius: 3px;
-  font-size: 0.9em;
-  font-family: 'Consolas', 'Monaco', 'Andale Mono', monospace;
+  font-size: 1em;
+  font-family:
+    var(--font-lineSeedKrBd),
+    -apple-system,
+    BlinkMacSystemFont,
+    'Segoe UI',
+    Roboto,
+    'Helvetica Neue',
+    Arial,
+    sans-serif;
+}
+
+/* Font weight utilities */
+.font-thin {
+  font-family:
+    var(--font-lineSeedKrTh),
+    -apple-system,
+    BlinkMacSystemFont,
+    'Segoe UI',
+    Roboto,
+    'Helvetica Neue',
+    Arial,
+    sans-serif;
+}
+
+.font-regular {
+  font-family:
+    var(--font-lineSeedKrRg),
+    -apple-system,
+    BlinkMacSystemFont,
+    'Segoe UI',
+    Roboto,
+    'Helvetica Neue',
+    Arial,
+    sans-serif;
+}
+
+.font-bold {
+  font-family:
+    var(--font-lineSeedKrBd),
+    -apple-system,
+    BlinkMacSystemFont,
+    'Segoe UI',
+    Roboto,
+    'Helvetica Neue',
+    Arial,
+    sans-serif;
+}
+
+/* Font smoothing for better rendering */
+* {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+
+/* Selection style */
+::selection {
+  background-color: #b39ddb;
+  color: white;
+}
+
+/* Focus outline */
+:focus {
+  outline: 2px solid #b39ddb;
+  outline-offset: 2px;
+}
+
+/* Remove focus outline for mouse users */
+:focus:not(:focus-visible) {
+  outline: none;
 }

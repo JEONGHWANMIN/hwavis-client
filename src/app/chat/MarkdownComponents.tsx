@@ -1,131 +1,356 @@
 import React, { ReactNode } from 'react'
 import styled from '@emotion/styled'
+import { keyframes } from '@emotion/react'
 import MarkdownCodeBlock from '@/app/chat/MarkdownCodeBlock'
 
-// 기본 컴포넌트 props 타입 정의
-interface ComponentProps {
+// Types
+interface BaseProps {
   children?: ReactNode
-  [key: string]: unknown
+  className?: string
 }
 
-// 링크 컴포넌트를 위한 특별한 props 타입
-interface LinkProps extends ComponentProps {
+interface LinkProps extends BaseProps {
   href?: string
+  rel?: string
+  target?: string
 }
 
-const Header1 = styled.h1`
-  font-size: 1.5em;
-  font-weight: bold;
-  margin: 1.5em 0 1em 0;
+interface TableProps extends BaseProps {
+  align?: 'left' | 'center' | 'right'
+}
+
+interface HeadingProps extends BaseProps {
+  id?: string
+}
+
+interface MarkdownComponentsMap {
+  code: React.ComponentType
+  h1: React.ComponentType<HeadingProps>
+  h2: React.ComponentType<HeadingProps>
+  h3: React.ComponentType<HeadingProps>
+  p: React.ComponentType<BaseProps>
+  strong: React.ComponentType<BaseProps>
+  em: React.ComponentType<BaseProps>
+  ul: React.ComponentType<BaseProps>
+  ol: React.ComponentType<BaseProps>
+  li: React.ComponentType<BaseProps>
+  a: React.ComponentType<LinkProps>
+  blockquote: React.ComponentType<BaseProps>
+  hr: React.ComponentType<BaseProps>
+  table: React.ComponentType<TableProps>
+  th: React.ComponentType<TableProps>
+  td: React.ComponentType<TableProps>
+  pre: React.ComponentType<BaseProps>
+}
+
+// Animations
+const gradientAnimation = keyframes`
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
 `
 
-const Header2 = styled.h2`
-  font-size: 1.3em;
-  font-weight: bold;
-  margin: 1.4em 0 0.8em 0;
+const fadeIn = keyframes`
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
 `
 
-const Header3 = styled.h3`
-  font-size: 1.1em;
-  font-weight: bold;
-  margin: 1.3em 0 0.6em 0;
-`
+// Styled Components
+const Header1 = styled.h1<HeadingProps>`
+  font-size: 2.3rem;
+  font-weight: 700;
+  color: #1a1a1a;
+  margin: 2.5em 0 1.5em;
+  line-height: 1.3;
+  letter-spacing: -0.03em;
+  font-family: var(--font-lineSeedKrBd);
+  position: relative;
+  animation: ${fadeIn} 0.5s ease-out;
 
-const Paragraph = styled.p`
-  margin-bottom: 1em;
-  line-height: 1.6;
-`
-
-const Strong = styled.strong`
-  font-weight: 600;
-`
-
-const Emphasis = styled.em`
-  font-style: italic;
-`
-
-const UnorderedList = styled.ul`
-  margin: 0 0 1em 1em;
-  padding-left: 1em;
-  list-style-type: disc;
-`
-
-const OrderedList = styled.ol`
-  margin: 0 0 1em 1em;
-  padding-left: 1em;
-  list-style-type: decimal;
-`
-
-const ListItem = styled.li`
-  margin: 0.5em 0;
-`
-
-const Link = styled.a`
-  color: #0066cc;
-  text-decoration: underline;
-  &:hover {
-    color: #0052a3;
+  &::after {
+    content: '';
+    display: block;
+    width: 100%;
+    height: 4px;
+    margin-top: 0.3em;
+    background: linear-gradient(90deg, #b39ddb, #9575cd, #7e57c2);
+    background-size: 200% 200%;
+    animation: ${gradientAnimation} 6s ease infinite;
+    border-radius: 4px;
   }
 `
 
-const Blockquote = styled.blockquote`
-  border-left: 4px solid #e0e0e0;
+const Header2 = styled.h2<HeadingProps>`
+  font-size: 1.8rem;
+  font-weight: 600;
+  color: #2a2a2a;
+  margin: 2em 0 1.2em;
+  line-height: 1.4;
+  letter-spacing: -0.02em;
+  font-family: var(--font-lineSeedKrBd);
+  position: relative;
   padding-left: 1em;
-  margin: 1em 0;
+
+  &::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0.2em;
+    bottom: 0.2em;
+    width: 4px;
+    background: #b39ddb;
+    border-radius: 4px;
+  }
+`
+
+const Header3 = styled.h3<HeadingProps>`
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: #3a3a3a;
+  margin: 1.8em 0 1em;
+  line-height: 1.4;
+  font-family: var(--font-lineSeedKrBd);
+  background: linear-gradient(120deg, #b39ddb 0%, #9575cd 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+`
+
+const Paragraph = styled.p<BaseProps>`
+  margin-bottom: 1.2em;
+  line-height: 1.8;
+  color: #4a4a4a;
+  font-size: 0.95rem; // 1.1rem에서 0.95rem으로 축소
+  font-family: var(--font-lineSeedKrRg);
+
+  &:last-child {
+    margin-bottom: 0;
+  }
+`
+
+const Strong = styled.strong<BaseProps>`
+  font-weight: 600;
+  color: #2a2a2a;
+  font-family: var(--font-lineSeedKrBd);
+  background: linear-gradient(120deg, #b39ddb 0%, #9575cd 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+`
+
+const Emphasis = styled.em<BaseProps>`
   font-style: italic;
+  color: #3a3a3a;
+  font-family: var(--font-lineSeedKrRg);
+`
+
+const UnorderedList = styled.ul<BaseProps>`
+  margin: 1.5em 0 2em;
+  padding-left: 1.2em;
+  list-style-type: none;
+  font-size: 0.95rem; // 새로 추가
+
+  & > li {
+    position: relative;
+    padding-left: 1em;
+    margin-bottom: 0.8em;
+
+    &::before {
+      content: '';
+      position: absolute;
+      left: -0.5em;
+      top: 0.7em;
+      width: 8px;
+      height: 8px;
+      background-color: #b39ddb;
+      border-radius: 50%;
+      transform: scale(0.8);
+      transition: transform 0.2s ease;
+    }
+
+    &:hover::before {
+      transform: scale(1);
+    }
+  }
+`
+
+const OrderedList = styled.ol<BaseProps>`
+  margin: 1.5em 0 2em;
+  padding-left: 1.2em;
+  counter-reset: item;
+  list-style-type: none;
+  font-size: 0.95rem; // 새로 추가
+
+  & > li {
+    position: relative;
+    counter-increment: item;
+    padding-left: 2em;
+    margin-bottom: 0.8em;
+
+    &::before {
+      content: counter(item);
+      position: absolute;
+      left: -1em;
+      top: 0.2em;
+      width: 1.8em;
+      height: 1.8em;
+      background: #b39ddb;
+      color: white;
+      font-weight: 600;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.9em;
+      transition: transform 0.2s ease;
+    }
+
+    &:hover::before {
+      transform: scale(1.1);
+    }
+  }
+`
+
+const ListItem = styled.li<BaseProps>`
+  line-height: 1.6;
+  color: #4a4a4a;
+  font-family: var(--font-lineSeedKrRg);
+`
+
+const Blockquote = styled.blockquote<BaseProps>`
+  margin: 2em 0;
+  padding: 2em 2em 2em 2.5em;
+  background: linear-gradient(to right, #f8f4ff, #ffffff);
+  border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(179, 157, 219, 0.1);
+  position: relative;
+  font-family: var(--font-lineSeedKrRg);
+  font-size: 0.95rem; // 새로 추가
+
+  &::before {
+    content: '"';
+    position: absolute;
+    left: 1em;
+    top: 1em;
+    font-size: 2.5em;
+    color: #b39ddb;
+    font-family: Georgia, serif;
+  }
+
+  & > p {
+    margin: 0;
+    color: #5e35b1;
+    font-style: italic;
+    line-height: 1.8;
+  }
 `
 
 const HorizontalRule = styled.hr`
-  margin: 2em 0;
+  margin: 3em 0;
   border: none;
-  border-top: 1px solid #e0e0e0;
+  height: 2px;
+  background: linear-gradient(
+    90deg,
+    rgba(179, 157, 219, 0),
+    rgba(179, 157, 219, 0.6) 50%,
+    rgba(179, 157, 219, 0)
+  );
 `
 
-const Table = styled.table`
+const Table = styled.table<TableProps>`
   width: 100%;
-  margin: 1em 0;
-  border-collapse: collapse;
+  margin: 2em 0;
+  border-collapse: separate;
+  border-spacing: 0;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 4px 20px rgba(179, 157, 219, 0.1);
+  text-align: ${props => props.align || 'left'};
+  font-family: var(--font-lineSeedKrRg);
+  font-size: 0.95rem; // 새로 추가
 `
 
-const TableHeader = styled.th`
-  padding: 0.5em;
-  background-color: #f5f5f5;
-  border: 1px solid #e0e0e0;
+const TableHeader = styled.th<TableProps>`
+  padding: 1em 1.5em;
+  background: linear-gradient(to right, #b39ddb, #9575cd);
+  color: white;
   font-weight: 600;
+  font-family: var(--font-lineSeedKrBd);
+  text-align: ${props => props.align || 'left'};
 `
 
-const TableCell = styled.td`
-  padding: 0.5em;
-  border: 1px solid #e0e0e0;
+const TableCell = styled.td<TableProps>`
+  padding: 1em 1.5em;
+  border-bottom: 1px solid rgba(179, 157, 219, 0.2);
+  color: #4a4a4a;
+  text-align: ${props => props.align || 'left'};
+  transition: background-color 0.2s ease;
+
+  tr:hover & {
+    background-color: rgba(179, 157, 219, 0.05);
+  }
+
+  tr:last-child & {
+    border-bottom: none;
+  }
 `
 
-// 컴포넌트 맵 타입 정의
-interface MarkdownComponentsMap {
-  [key: string]: React.FC<ComponentProps | LinkProps>
-}
+const PreBlock = styled.pre<BaseProps>`
+  margin: 1.2em 0;
+  border-radius: 12px;
+  overflow: hidden;
+  font-size: 0.95rem; // 새로 추가
+`
 
+// Component Map
 const MarkdownComponents: MarkdownComponentsMap = {
   code: MarkdownCodeBlock,
-  h1: ({ children }) => <Header1>{children}</Header1>,
-  h2: ({ children }) => <Header2>{children}</Header2>,
-  h3: ({ children }) => <Header3>{children}</Header3>,
-  p: ({ children }) => <Paragraph>{children}</Paragraph>,
-  strong: ({ children }) => <Strong>{children}</Strong>,
-  em: ({ children }) => <Emphasis>{children}</Emphasis>,
-  ul: ({ children }) => <UnorderedList>{children}</UnorderedList>,
-  ol: ({ children }) => <OrderedList>{children}</OrderedList>,
-  li: ({ children }) => <ListItem>{children}</ListItem>,
-  a: ({ children }) => (
-    <Link target="_blank" rel="noopener noreferrer">
-      {children}
-    </Link>
+  h1: ({ children, ...props }: HeadingProps) => (
+    <Header1 {...props}>{children}</Header1>
   ),
-  blockquote: ({ children }) => <Blockquote>{children}</Blockquote>,
+  h2: ({ children, ...props }: HeadingProps) => (
+    <Header2 {...props}>{children}</Header2>
+  ),
+  h3: ({ children, ...props }: HeadingProps) => (
+    <Header3 {...props}>{children}</Header3>
+  ),
+  p: ({ children, ...props }: BaseProps) => (
+    <Paragraph {...props}>{children}</Paragraph>
+  ),
+  strong: ({ children, ...props }: BaseProps) => (
+    <Strong {...props}>{children}</Strong>
+  ),
+  em: ({ children, ...props }: BaseProps) => (
+    <Emphasis {...props}>{children}</Emphasis>
+  ),
+  ul: ({ children, ...props }: BaseProps) => (
+    <UnorderedList {...props}>{children}</UnorderedList>
+  ),
+  ol: ({ children, ...props }: BaseProps) => (
+    <OrderedList {...props}>{children}</OrderedList>
+  ),
+  li: ({ children, ...props }: BaseProps) => (
+    <ListItem {...props}>{children}</ListItem>
+  ),
+  a: ({ href, children, ...props }: LinkProps) => (
+    <a href={href} target="_blank" rel="noopener noreferrer" {...props}>
+      {children}
+    </a>
+  ),
+  blockquote: ({ children, ...props }: BaseProps) => (
+    <Blockquote {...props}>{children}</Blockquote>
+  ),
   hr: () => <HorizontalRule />,
-  table: ({ children }) => <Table>{children}</Table>,
-  th: ({ children }) => <TableHeader>{children}</TableHeader>,
-  td: ({ children }) => <TableCell>{children}</TableCell>,
-  pre: ({ children }) => <>{children}</>,
+  table: ({ children, ...props }: TableProps) => (
+    <Table {...props}>{children}</Table>
+  ),
+  th: ({ children, ...props }: TableProps) => (
+    <TableHeader {...props}>{children}</TableHeader>
+  ),
+  td: ({ children, ...props }: TableProps) => (
+    <TableCell {...props}>{children}</TableCell>
+  ),
+  pre: ({ children, ...props }: BaseProps) => (
+    <PreBlock {...props}>{children}</PreBlock>
+  ),
 }
 
 export default MarkdownComponents
