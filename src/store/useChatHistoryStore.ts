@@ -1,8 +1,8 @@
 import { create } from 'zustand'
 import { persist } from 'zustand/middleware'
 
-interface GptMessage {
-  role: 'user' | 'assistant'
+export interface GptMessage {
+  role: string
   content: string
   timestamp: number
 }

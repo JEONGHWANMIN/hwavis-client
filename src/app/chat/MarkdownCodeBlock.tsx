@@ -81,11 +81,32 @@ const CopyButton = styled.button<{ copied: boolean }>`
 const InlineCode = styled.code`
   background: #2a2a3c;
   color: #b9b9c3;
-  padding: 0.2em 0.6em;
+  padding: 0.2em 0.4em;
   border-radius: 4px;
-  font-size: 0.9em;
-  font-family: var(--font-lineSeedKrRg);
-  border: 1px solid #4a4a5c;
+  font-size: 0.85em;
+  font-family: 'JetBrains Mono', Consolas, var(--font-lineSeedKrRg);
+  border: 1px solid rgba(74, 74, 92, 0.4);
+  display: inline-block;
+  line-height: 1.4;
+  margin: 0 0.1em;
+  white-space: pre-wrap;
+  word-break: break-word;
+  vertical-align: middle;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.03);
+
+  /* 여러 줄일 때의 스타일 */
+  &:has(br),
+  &:has(div) {
+    display: block;
+    padding: 0.8em 1em;
+    margin: 0.8em 0;
+    width: 100%;
+    overflow-x: auto;
+  }
+
+  &::selection {
+    background: rgba(185, 185, 195, 0.2);
+  }
 `
 
 const CodeBlock: React.FC<CodeBlockProps> = ({
@@ -178,7 +199,7 @@ const CodeBlock: React.FC<CodeBlockProps> = ({
         language={language}
         customStyle={{
           margin: 0,
-          padding: '1.5em',
+          padding: '2em',
           fontSize: '0.95rem',
           lineHeight: '1.5',
         }}

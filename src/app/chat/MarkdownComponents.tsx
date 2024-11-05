@@ -60,7 +60,7 @@ const Header1 = styled.h1<HeadingProps>`
   font-size: 2.3rem;
   font-weight: 700;
   color: #1a1a1a;
-  margin: 2.5em 0 1.5em;
+  margin: 1em 0 1em;
   line-height: 1.3;
   letter-spacing: -0.03em;
   font-family: var(--font-lineSeedKrBd);
@@ -113,6 +113,31 @@ const Header3 = styled.h3<HeadingProps>`
   background: linear-gradient(120deg, #b39ddb 0%, #9575cd 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
+
+  &::selection {
+    background: #b39ddb; // 드래그 배경색
+    color: white; // 드래그된 텍스트 색상
+    -webkit-text-fill-color: white; // gradient 텍스트를 위해 필요
+  }
+
+  /* gradient 효과를 span으로 감싸서 적용 */
+  & > span {
+    background: linear-gradient(120deg, #b39ddb 0%, #9575cd 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+
+  /* code 태그가 있을 경우 기본 스타일 적용 */
+  & code {
+    background: #2a2a3c;
+    color: #b9b9c3 !important; /* code 블록의 색상 강제 적용 */
+    -webkit-text-fill-color: #b9b9c3 !important; /* gradient 효과 override */
+    padding: 0.2em 0.6em;
+    border-radius: 4px;
+    font-size: 0.6em;
+    font-family: var(--font-lineSeedKrRg);
+    border: 1px solid #4a4a5c;
+  }
 `
 
 const Paragraph = styled.p<BaseProps>`
@@ -125,6 +150,17 @@ const Paragraph = styled.p<BaseProps>`
   &:last-child {
     margin-bottom: 0;
   }
+
+  & code {
+    background: #2a2a3c;
+    color: #b9b9c3 !important; /* code 블록의 색상 강제 적용 */
+    -webkit-text-fill-color: #b9b9c3 !important; /* gradient 효과 override */
+    padding: 0.2em 0.6em;
+    border-radius: 4px;
+    font-size: 0.7em;
+    font-family: var(--font-lineSeedKrRg);
+    border: 1px solid #4a4a5c;
+  }
 `
 
 const Strong = styled.strong<BaseProps>`
@@ -134,6 +170,12 @@ const Strong = styled.strong<BaseProps>`
   background: linear-gradient(120deg, #b39ddb 0%, #9575cd 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
+
+  &::selection {
+    background: #b39ddb; // 드래그 배경색
+    color: white; // 드래그된 텍스트 색상
+    -webkit-text-fill-color: white; // gradient 텍스트를 위해 필요
+  }
 `
 
 const Emphasis = styled.em<BaseProps>`
@@ -143,10 +185,10 @@ const Emphasis = styled.em<BaseProps>`
 `
 
 const UnorderedList = styled.ul<BaseProps>`
-  margin: 1.5em 0 2em;
+  margin: 2em 0 2em;
   padding-left: 1.2em;
   list-style-type: none;
-  font-size: 0.95rem; // 새로 추가
+  font-size: 1rem; // 새로 추가
 
   & > li {
     position: relative;
@@ -157,7 +199,7 @@ const UnorderedList = styled.ul<BaseProps>`
       content: '';
       position: absolute;
       left: -0.5em;
-      top: 0.7em;
+      top: 0.6em;
       width: 8px;
       height: 8px;
       background-color: #b39ddb;
@@ -182,14 +224,14 @@ const OrderedList = styled.ol<BaseProps>`
   & > li {
     position: relative;
     counter-increment: item;
-    padding-left: 2em;
+    padding-left: 1.4em;
     margin-bottom: 0.8em;
 
     &::before {
       content: counter(item);
       position: absolute;
       left: -1em;
-      top: 0.2em;
+      top: 0.1em;
       width: 1.8em;
       height: 1.8em;
       background: #b39ddb;
@@ -210,29 +252,30 @@ const OrderedList = styled.ol<BaseProps>`
 `
 
 const ListItem = styled.li<BaseProps>`
-  line-height: 1.6;
+  line-height: 1.8;
   color: #4a4a4a;
   font-family: var(--font-lineSeedKrRg);
 `
 
 const Blockquote = styled.blockquote<BaseProps>`
   margin: 2em 0;
-  padding: 2em 2em 2em 2.5em;
+  padding: 2.5em 2em 2em 3.5em; // 왼쪽 패딩 증가, 상단 패딩 조정
   background: linear-gradient(to right, #f8f4ff, #ffffff);
   border-radius: 12px;
   box-shadow: 0 4px 20px rgba(179, 157, 219, 0.1);
   position: relative;
   font-family: var(--font-lineSeedKrRg);
-  font-size: 0.95rem; // 새로 추가
+  font-size: 0.95rem;
 
   &::before {
     content: '"';
     position: absolute;
-    left: 1em;
-    top: 1em;
-    font-size: 2.5em;
+    left: 0.8em; // 왼쪽 위치 조정
+    top: 0.6em; // 상단 위치 조정
+    font-size: 3em; // 크기 약간 증가
     color: #b39ddb;
     font-family: Georgia, serif;
+    line-height: 1; // 추가: 라인 높이 조정
   }
 
   & > p {
@@ -240,6 +283,8 @@ const Blockquote = styled.blockquote<BaseProps>`
     color: #5e35b1;
     font-style: italic;
     line-height: 1.8;
+    word-break: keep-all; // 추가: 한글 단어 단위 줄바꿈
+    white-space: pre-wrap; // 추가: 공백 유지하며 줄바꿈
   }
 `
 
@@ -294,10 +339,10 @@ const TableCell = styled.td<TableProps>`
 `
 
 const PreBlock = styled.pre<BaseProps>`
-  margin: 1.2em 0;
-  border-radius: 12px;
+  margin: 4px 0;
+  border-radius: 16px;
   overflow: hidden;
-  font-size: 0.95rem; // 새로 추가
+  font-size: 1.2rem; // 새로 추가
 `
 
 // Component Map

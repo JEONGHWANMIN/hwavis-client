@@ -11,8 +11,9 @@ import rehypeHighlight from 'rehype-highlight'
 import rehypeKatex from 'rehype-katex'
 import rehypeRaw from 'rehype-raw'
 import remarkMath from 'remark-math'
+import remarkGfm from 'remark-gfm'
 import React from 'react'
-import { GptMessage } from '@/app/chat/page'
+import { GptMessage } from '@/store/useChatHistoryStore'
 
 const Message = ({ chat, index }: { chat: GptMessage; index: number }) => (
   <MessageWrapper key={`${chat.timestamp}-${index}`} role={chat.role}>
@@ -24,9 +25,9 @@ const Message = ({ chat, index }: { chat: GptMessage; index: number }) => (
       <ReactMarkdown
         components={MarkdownComponents as Partial<Components>}
         rehypePlugins={[rehypeHighlight, rehypeKatex, rehypeRaw]}
-        remarkPlugins={[remarkMath]}
+        remarkPlugins={[remarkMath, remarkGfm]}
       >
-        {chat.content.replace(/\\n/g, '\n')}
+        {chat.content}
       </ReactMarkdown>
     </MessageBubble>
   </MessageWrapper>

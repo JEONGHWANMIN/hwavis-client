@@ -12,11 +12,11 @@ import { ChatContainer, ChatBox } from './styles' // 스타일 컴포넌트들�
 import Message from './Message'
 import InitialMessage from '@/app/chat/InitialMessage'
 import ChatInput from './ChatInput'
+import useAiTypeStore from '@/store/useAiTypeStore'
 
-export interface GptMessage {
-  role: 'user' | 'assistant'
+export interface PromptResponse {
   content: string
-  timestamp: number
+  role: string
 }
 
 const ChatPage = () => {
@@ -25,8 +25,8 @@ const ChatPage = () => {
   const [text, setText] = useState('')
   const [currentChatId, setCurrentChatId] = useState<number | null>(null)
   const [mounted, setMounted] = useState(false)
-
-  const apiKey = useApiKeyStore(state => state.apiKey)
+  const aiType = useAiTypeStore(state => state.aiType)
+  const { gptApiKey, claudeApiKey } = useApiKeyStore()
   const { createChat, addMessage, getAllMessages, getAllChatIds, clearChat } =
     useChatHistoryStore()
 
@@ -60,8 +60,12 @@ const ChatPage = () => {
   }
 
   const validateSubmission = () => {
-    if (!apiKey) {
-      showError('api key를 등록해주세요')
+    if (aiType === 'claude' && !claudeApiKey) {
+      showError('claude api key를 등록해주세요')
+      return false
+    }
+    if (aiType === 'gpt' && !gptApiKey) {
+      showError('gpt api key를 등록해주세요')
       return false
     }
     if (text.trim().length === 0) {
@@ -88,7 +92,7 @@ const ChatPage = () => {
 
     setIsLoading(true)
 
-    const userMessage: GptMessage = {
+    const userMessage = {
       role: 'user',
       content: text.trim(),
       timestamp: Date.now(),
@@ -98,25 +102,21 @@ const ChatPage = () => {
     setText('')
 
     try {
-      const response = await axiosInstance.post<{ message: GptMessage }>(
-        '/hwanvis',
-        {
-          apiKey,
-          messages: [...chats, userMessage],
-        },
-      )
+      const messages = chats.map(({ role, content }) => ({ role, content }))
+      const { role, content } = userMessage
+      const response = await axiosInstance.post<PromptResponse>('/hwanvis', {
+        apiKey: aiType === 'claude' ? claudeApiKey : gptApiKey,
+        messages: [...messages, { role, content }],
+        type: aiType,
+      })
 
       addMessage(currentChatId, {
-        role: 'assistant',
-        content: response.data.message?.content || '',
+        role: response.data.role,
+        content: response.data.content || '',
         timestamp: Date.now(),
       })
     } catch (error) {
-      addMessage(currentChatId, {
-        role: 'assistant',
-        content: '죄송합니다. 오류가 발생했습니다. 다시 시도해 주세요.',
-        timestamp: Date.now(),
-      })
+      showError('죄송합니다. 오류가 발생했습니다. 다시 시도해 주세요.')
       console.error('API 요청 실패:', error)
     } finally {
       setIsLoading(false)
