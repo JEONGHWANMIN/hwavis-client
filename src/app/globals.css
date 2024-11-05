@@ -229,6 +229,10 @@ code {
   text-rendering: optimizeLegibility;
 }
 
+html {
+  overflow-y: hidden;
+}
+
 /* Selection style */
 ::selection {
   background-color: #b39ddb;

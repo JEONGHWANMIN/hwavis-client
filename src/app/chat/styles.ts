@@ -19,15 +19,16 @@ export const ChatBox = styled.div`
   }
 
   &::-webkit-scrollbar-thumb {
-    background-color: rgba(0, 0, 0, 0.2);
+    background-color: rgba(0, 0, 0, 0.6);
     border-radius: 3px;
+
     &:hover {
       background-color: rgba(0, 0, 0, 0.3);
     }
   }
 
   scrollbar-width: thin;
-  scrollbar-color: rgba(0, 0, 0, 0.2) transparent;
+  scrollbar-color: #dcd3d3 transparent;
 `
 
 export const InputBox = styled.div`
